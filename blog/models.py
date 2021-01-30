@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.timezone import now
 
 
 class Tag(models.Model):
@@ -19,7 +20,13 @@ class Category(models.Model):
 
 class Comment(models.Model):
     """ Model for comments """
-    pass
+
+    comment_text = models.TextField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    # user =
+    #
+    # To create a recursive relationship – an object that has a many-to-one relationship with itself
+    parent_id = models.ForeignKey(to='self', on_delete=models.CASCADE, null=True, blank=True)
 
 
 class BlogPost(models.Model):
@@ -36,10 +43,10 @@ class BlogPost(models.Model):
 
     # relational fields
     # ONE user can post MANY blog posts and ONE specific blog post belongs to ONE user
-    author = models.ForeignKey(to=User, on_delete=models.SET_DEFAULT, related_name='Author', default='Admin')
+    author = models.ForeignKey(to=User, on_delete=models.SET_DEFAULT, default='Admin')
 
     # ONE blog post can have MANY tags and ONE tag can filter MANY blog posts
-    tags = models.ManyToManyField()
+    tags = models.ManyToManyField(to=Tag, blank=True)
 
     # ONE blog post belongs to ONE category and ONE category contains MANY blog posts
     category = models.ForeignKey(to=Category, on_delete=models.SET_NULL, null=True, blank=True)
