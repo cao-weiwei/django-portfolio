@@ -1,0 +1,38 @@
+{% extends 'blog/base.html' %}
+
+{% block blog_posts_list %}
+    {% for blog_post in blog_posts %}
+        <!-- Blog post items -->
+        <article class="post post-{{ blog_post.id }}">
+            <!-- Blog post info -->
+            <header class="entry-header">
+                <!-- Blog post title -->
+                <h1 class="entry-title">
+                    <a href="#">{{ blog_post.title }}</a>
+                </h1>
+
+                <div class="entry-meta">
+                    <!-- Blog post category -->
+                    <span class="post-category"><a href="#">{{ blog_post.category }}</a></span>
+                    <!-- Blog post published date -->
+                    <span class="post-date"><a href="#"><time class="entry-date" >{{ blog_post.created_at|date:'Y-m-d H:i:s' }}</time></a></span>
+                    <!-- Blog post author -->
+                    <span class="post-author"><a href="#">{{ blog_post.author }}</a></span>
+                    <!-- Blog post comments-->
+                    <span class="comments-link"><a href="#">{{ blog_post.comments }} 评论</a></span>
+                    <!-- Blog post likes-->
+                    <span class="views-count"><a href="#">{{ blog_post.likes }} 喜欢</a></span>
+                    <!-- Blog post views-->
+                    <span class="views-count"><a href="#">{{ blog_post.views }} 阅读</a></span>
+                </div>
+            </header>
+            <!-- Blog post abstract and detail link -->
+            <div class="entry-content clearfix">
+                <p>{{ blog_post.excerpt }}</p>
+                <div class="read-more cl-effect-14">
+                    <a href="#" class="more-link">继续阅读 <span class="meta-nav">→</span></a>
+                </div>
+            </div>
+        </article>
+    {% endfor %}
+{% endblock %}

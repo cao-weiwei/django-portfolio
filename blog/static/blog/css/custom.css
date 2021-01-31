@@ -243,7 +243,8 @@ img {
 .post-category::after,
 .post-date::after,
 .post-author::after,
-.comments-link::after {
+.comments-link::after,
+.views-count::after {
     content: ' ·';
     color: #000;
 }
