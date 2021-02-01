@@ -1,6 +1,6 @@
 {% extends 'blog/base.html' %}
 
-{% block blog_posts_list %}
+{% block main_contain_region %}
     {% for blog_post in blog_posts %}
         <!-- Blog post items -->
         <article class="post post-{{ blog_post.id }}">
@@ -8,31 +8,118 @@
             <header class="entry-header">
                 <!-- Blog post title -->
                 <h1 class="entry-title">
-                    <a href="#">{{ blog_post.title }}</a>
+                    <a href="{{ blog_post.get_post_url }}">{{ blog_post.title }}</a>
                 </h1>
 
                 <div class="entry-meta">
                     <!-- Blog post category -->
                     <span class="post-category"><a href="#">{{ blog_post.category }}</a></span>
                     <!-- Blog post published date -->
-                    <span class="post-date"><a href="#"><time class="entry-date" >{{ blog_post.created_at|date:'Y-m-d H:i:s' }}</time></a></span>
+                    <span class="post-date"><a href="#"><time class="entry-date" >{{ blog_post.created_at }}</time></a></span>
                     <!-- Blog post author -->
                     <span class="post-author"><a href="#">{{ blog_post.author }}</a></span>
                     <!-- Blog post comments-->
                     <span class="comments-link"><a href="#">{{ blog_post.comments }} 评论</a></span>
-                    <!-- Blog post likes-->
-                    <span class="views-count"><a href="#">{{ blog_post.likes }} 喜欢</a></span>
                     <!-- Blog post views-->
                     <span class="views-count"><a href="#">{{ blog_post.views }} 阅读</a></span>
+                    <!-- Blog post likes-->
+                    <span class="likes-count"><a href="#">{{ blog_post.likes }} 喜欢</a></span>
                 </div>
             </header>
             <!-- Blog post abstract and detail link -->
             <div class="entry-content clearfix">
                 <p>{{ blog_post.excerpt }}</p>
                 <div class="read-more cl-effect-14">
-                    <a href="#" class="more-link">继续阅读 <span class="meta-nav">→</span></a>
+                    <a href="{{ blog_post.get_post_url }}" class="more-link">继续阅读 <span class="meta-nav">→</span></a>
                 </div>
             </div>
         </article>
+    {% empty %}
+        <div class="no-post"><h1>暂时还没有发布的文章！</h1></div>
     {% endfor %}
+{% endblock %}
+
+{% block side_navi_region %}
+    <div class="widget widget-recent-posts">
+        <h3 class="widget-title">最新文章</h3>
+        <ul>
+            <li>
+                <a href="#">Django 博客开发入门教程：前言</a>
+            </li>
+            <li>
+                <a href="#">Django 博客使用 Markdown 自动生成文章目录</a>
+            </li>
+            <li>
+                <a href="#">部署 Django 博客</a>
+            </li>
+        </ul>
+    </div>
+    <div class="widget widget-archives">
+        <h3 class="widget-title">归档</h3>
+        <ul>
+            <li>
+                <a href="#">2017 年 5 月</a>
+            </li>
+            <li>
+                <a href="#">2017 年 4 月</a>
+            </li>
+            <li>
+                <a href="#">2017 年 3 月</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="widget widget-category">
+        <h3 class="widget-title">分类</h3>
+        <ul>
+            <li>
+                <a href="#">Django 博客教程 <span class="post-count">(13)</span></a>
+            </li>
+            <li>
+                <a href="#">Python 教程 <span class="post-count">(11)</span></a>
+            </li>
+            <li>
+                <a href="#">Django 用户认证 <span class="post-count">(8)</span></a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="widget widget-tag-cloud">
+        <h3 class="widget-title">标签云</h3>
+        <ul>
+            <li>
+                <a href="#">Django</a>
+            </li>
+            <li>
+                <a href="#">Python</a>
+            </li>
+            <li>
+                <a href="#">Java</a>
+            </li>
+            <li>
+                <a href="#">笔记</a>
+            </li>
+            <li>
+                <a href="#">文档</a>
+            </li>
+            <li>
+                <a href="#">AngularJS</a>
+            </li>
+            <li>
+                <a href="#">CSS</a>
+            </li>
+            <li>
+                <a href="#">JavaScript</a>
+            </li>
+            <li>
+                <a href="#">Snippet</a>
+            </li>
+            <li>
+                <a href="#">jQuery</a>
+            </li>
+        </ul>
+    </div>
+    <div class="rss">
+        <a href=""><span class="ion-social-rss-outline"></span> RSS 订阅</a>
+    </div>
 {% endblock %}

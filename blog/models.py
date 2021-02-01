@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.timezone import now
+from django.urls import reverse
 
 
 class Tag(models.Model):
@@ -9,13 +10,24 @@ class Tag(models.Model):
     """
     tag_name = models.CharField(max_length=32, unique=True)
 
+    class Meta:
+        verbose_name = '标签'
+        verbose_name_plural = '标签列表'
+
     def __str__(self):
-        return 'tag name:'
+        return '%s' % self.tag_name
 
 
 class Category(models.Model):
     """ Model for categories """
     category_name = models.CharField(max_length=32)
+
+    class Meta:
+        verbose_name = '分类'
+        verbose_name_plural = '分类列表'
+
+    def __str__(self):
+        return '%s' % self.category_name
 
 
 class Comment(models.Model):
@@ -28,6 +40,10 @@ class Comment(models.Model):
     # To create a recursive relationship – an object that has a many-to-one relationship with itself
     parent_id = models.ForeignKey(to='self', on_delete=models.CASCADE, null=True, blank=True)
 
+    class Meta:
+        verbose_name = '评论'
+        verbose_name_plural = '评论列表'
+
 
 class BlogPost(models.Model):
     """ Model for a blog post """
@@ -36,8 +52,8 @@ class BlogPost(models.Model):
     title = models.CharField(max_length=64)
     text = models.TextField()
     excerpt = models.CharField(max_length=128)
-    views = models.PositiveIntegerField()
-    likes = models.PositiveIntegerField()
+    views = models.PositiveIntegerField(default=0)
+    likes = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -53,4 +69,17 @@ class BlogPost(models.Model):
 
     # ONE blog posts contains MANY comments and ONE comment only belongs to ONE specific blog post
     comments = models.ForeignKey(to=Comment, on_delete=models.SET_NULL, null=True, blank=True)
+
+    class Meta:
+        verbose_name = '文章'
+        verbose_name_plural = '文章列表'
+
+    def __str__(self):
+        return '%s' % self.title
+
+    def get_post_url(self):
+        """
+        get blog post's url
+        """
+        return reverse('blog:blog_post_detail', kwargs={'post_id': self.id})
 
