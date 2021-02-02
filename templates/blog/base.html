@@ -1,4 +1,5 @@
 {% load static %}
+{% load blog_extras %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -118,8 +119,17 @@
 
                     <!-- Sidenav region -->
                     <aside class="col-md-4">
-                        {% block side_navi_region %}
+                        {% block blog_post_toc %}
                         {% endblock %}
+
+                        {% show_recent_blog_posts %}
+                        {% show_archives %}
+                        {% show_tags %}
+                        {% show_categories %}
+
+                        <div class="rss">
+                            <a href=""><span class="ion-social-rss-outline"></span> RSS 订阅</a>
+                        </div>
                     </aside>
                 </div>
             </div>

@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from blog.models import BlogPost
+from django.utils.text import slugify
 import markdown2
 
 
@@ -33,22 +34,18 @@ def index(request):
 
 def blog_post_detail(request, post_id):
     blog_post = get_object_or_404(BlogPost, pk=post_id)
-    # blog_post.text = markdown.markdown(
-    #     blog_post.text,
-    #     extentions=[
-    #         'markdown.extensions.extra',
-    #         'markdown.extensions.codehilite',
-    #         # 'markdown.extensions.fenced_code',
-    #         'markdown.extensions.toc',
-    #     ])
-    blog_post.text = markdown2.markdown(
+
+    md2html = markdown2.markdown(
         blog_post.text,
         extras=[
             'fenced-code-blocks',
             'code-color',
-            'code-friendly'
-        ]
+            'code-friendly',
+            'toc'
+        ],
     )
+    blog_post.text = md2html
+    blog_post.toc = md2html.toc_html
 
     context = {
         'website_title': 'White & Black',

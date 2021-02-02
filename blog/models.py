@@ -1,7 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.utils.timezone import now
 from django.urls import reverse
+from django.utils.html import strip_tags
+import markdown2
 
 
 class Tag(models.Model):
@@ -51,7 +52,7 @@ class BlogPost(models.Model):
     # basic fields
     title = models.CharField(max_length=64)
     text = models.TextField()
-    excerpt = models.CharField(max_length=128)
+    excerpt = models.CharField(max_length=128, null=True, blank=True, default='')
     views = models.PositiveIntegerField(default=0)
     likes = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -73,6 +74,23 @@ class BlogPost(models.Model):
     class Meta:
         verbose_name = '文章'
         verbose_name_plural = '文章列表'
+
+    def save(self, *args, **kwargs):
+
+        if self.excerpt is None:
+            # if excerpt is empty, then an automatic excerpt will be generated
+            md2html = markdown2.markdown(
+                self.text,
+                extras=[
+                    'fenced-code-blocks',
+                    'code-color',
+                    'code-friendly',
+                ],
+            )
+            # remove html tags and fetch the first 64 characters from the main text
+            self.excerpt = strip_tags(md2html)[:64]
+
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return '%s' % self.title
