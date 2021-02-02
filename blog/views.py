@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from blog.models import BlogPost, Category, Tag, Comment
+from blog.models import BlogPost, Category, Tag
 from django.utils.text import slugify
 import markdown2
 

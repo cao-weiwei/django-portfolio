@@ -31,21 +31,6 @@ class Category(models.Model):
         return '%s' % self.category_name
 
 
-class Comment(models.Model):
-    """ Model for comments """
-
-    comment_text = models.TextField(null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    # user =
-    #
-    # To create a recursive relationship – an object that has a many-to-one relationship with itself
-    parent_id = models.ForeignKey(to='self', on_delete=models.CASCADE, null=True, blank=True)
-
-    class Meta:
-        verbose_name = '评论'
-        verbose_name_plural = '评论列表'
-
-
 class BlogPost(models.Model):
     """ Model for a blog post """
 
@@ -67,9 +52,6 @@ class BlogPost(models.Model):
 
     # ONE blog post belongs to ONE category and ONE category contains MANY blog posts
     category = models.ForeignKey(to=Category, on_delete=models.SET_NULL, null=True, blank=True)
-
-    # ONE blog posts contains MANY comments and ONE comment only belongs to ONE specific blog post
-    comments = models.ForeignKey(to=Comment, on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
         verbose_name = '文章'
