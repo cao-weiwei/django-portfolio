@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from blog.models import BlogPost
+from blog.models import BlogPost, Category, Tag, Comment
 from django.utils.text import slugify
 import markdown2
 
@@ -22,7 +22,7 @@ def index(request):
     """
     This function fetch all blog posts and render the index.html which is the main region of base.html
     """
-    blog_posts = BlogPost.objects.all()
+    blog_posts = BlogPost.objects.all().order_by('-created_at')
 
     context = {
         'website_title': 'White & Black',
@@ -53,3 +53,41 @@ def blog_post_detail(request, post_id):
     }
 
     return render(request, 'blog/blog_post_detail.html', context)
+
+
+def archive(request, year, month):
+
+    blog_posts = BlogPost.objects.filter(created_at__year=year, created_at__month=month).order_by('-created_at')
+
+    context = {
+        'website_title': 'White & Black',
+        'blog_posts': blog_posts,
+    }
+
+    return render(request, 'blog/index.html', context)
+
+
+def category(request, cate_id):
+
+    cate = get_object_or_404(Category, pk=cate_id)
+    blog_posts = BlogPost.objects.filter(category=cate).order_by('-created_at')
+
+    context = {
+        'website_title': 'White & Black',
+        'blog_posts': blog_posts,
+    }
+
+    return render(request, 'blog/index.html', context)
+
+
+def tags(request, tag_id):
+
+    tag = get_object_or_404(Tag, pk=tag_id)
+    blog_posts = BlogPost.objects.filter(tags=tag).order_by('-created_at')
+
+    context = {
+        'website_title': 'White & Black',
+        'blog_posts': blog_posts,
+    }
+
+    return render(request, 'blog/index.html', context)

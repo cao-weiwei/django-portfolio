@@ -3,7 +3,7 @@
     <ul>
         {% for datetime in datetime_list %}
         <li>
-            <a href="#">{{ datetime.year }} 年 {{ datetime.month }} 月</a>
+            <a href="{% url 'blog:archive' datetime.year datetime.month %}">{{ datetime.year }} 年 {{ datetime.month }} 月</a>
         </li>
         {% empty %}
             暂无归档！
