@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     # 'blog',  # blog application
     'blog.apps.BlogConfig',  # 注册 blog 应用
+    'comment.apps.CommentConfig',  # 注册 comment 应用
 ]
 
 MIDDLEWARE = [

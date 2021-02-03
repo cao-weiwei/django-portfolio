@@ -1,0 +1,6 @@
+{% extends 'blog/../base.html' %}
+{% load comments_extras %}
+
+{% block comment_region %}
+    {% show_comment_form blog_post form %}
+{% endblock %}

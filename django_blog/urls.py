@@ -20,5 +20,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     # urls for blog app
-    path('', include('blog.urls'))
+    path('', include('blog.urls')),
+
+    # urls for comment app
+    path('', include('comment.urls'))
 ]

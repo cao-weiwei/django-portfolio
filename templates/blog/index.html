@@ -1,4 +1,4 @@
-{% extends 'blog/base.html' %}
+{% extends 'blog/../base.html' %}
 
 {% block main_contain_region %}
     {% for blog_post in blog_posts %}
@@ -8,7 +8,7 @@
             <header class="entry-header">
                 <!-- Blog post title -->
                 <h1 class="entry-title">
-                    <a href="{{ blog_post.get_post_url }}">{{ blog_post.title }}</a>
+                    <a href="{{ blog_post.get_absolute_url }}">{{ blog_post.title }}</a>
                 </h1>
 
                 <div class="entry-meta">
@@ -30,7 +30,7 @@
             <div class="entry-content clearfix">
                 <p>{{ blog_post.excerpt }}....</p>
                 <div class="read-more cl-effect-14">
-                    <a href="{{ blog_post.get_post_url }}" class="more-link">继续阅读 <span class="meta-nav">→</span></a>
+                    <a href="{{ blog_post.get_absolute_url }}" class="more-link">继续阅读 <span class="meta-nav">→</span></a>
                 </div>
             </div>
         </article>

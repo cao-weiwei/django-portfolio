@@ -3,7 +3,7 @@
         <ul>
             {% for blog_post in recent_post_list %}
             <li>
-                <a href="{{ blog_post.get_post_url }}">{{ blog_post.title }}</a>
+                <a href="{{ blog_post.get_absolute_url }}">{{ blog_post.title }}</a>
             </li>
             {% empty %}
                 暂无文章！

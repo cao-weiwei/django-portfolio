@@ -77,7 +77,7 @@ class BlogPost(models.Model):
     def __str__(self):
         return '%s' % self.title
 
-    def get_post_url(self):
+    def get_absolute_url(self):
         """
         get blog post's url
         """
