@@ -20,7 +20,9 @@ class Tag(models.Model):
 
 
 class Category(models.Model):
-    """ Model for categories """
+    """
+    Model for categories
+    """
     category_name = models.CharField(max_length=32)
 
     class Meta:
@@ -32,8 +34,9 @@ class Category(models.Model):
 
 
 class BlogPost(models.Model):
-    """ Model for a blog post """
-
+    """
+    Model for a blog post
+    """
     # basic fields
     title = models.CharField(max_length=64)
     text = models.TextField()
@@ -56,11 +59,15 @@ class BlogPost(models.Model):
     class Meta:
         verbose_name = '文章'
         verbose_name_plural = '文章列表'
+        ordering = ['-created_at']  # set the default ordering field
 
     def save(self, *args, **kwargs):
-
+        """
+        rewrite the save() method to set a default excerpt field
+        """
         if self.excerpt is None:
             # if excerpt is empty, then an automatic excerpt will be generated
+            # to covert markdown syntax into html tags
             md2html = markdown2.markdown(
                 self.text,
                 extras=[
@@ -69,7 +76,8 @@ class BlogPost(models.Model):
                     'code-friendly',
                 ],
             )
-            # remove html tags and fetch the first 64 characters from the main text
+            # remove html tags and
+            # fetch the first 64 characters from the main text
             self.excerpt = strip_tags(md2html)[:64]
 
         super().save(*args, **kwargs)
@@ -81,5 +89,5 @@ class BlogPost(models.Model):
         """
         get blog post's url
         """
-        return reverse('blog:blog_post_detail', kwargs={'post_id': self.id})
+        return reverse('blog:blog_post_detail', kwargs={'blog_post_id': self.id})
 

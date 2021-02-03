@@ -4,7 +4,9 @@ from blog.models import BlogPost
 
 
 class Comment(models.Model):
-
+    """
+    Model for a comment
+    """
     username = models.CharField(max_length=64)
     email = models.EmailField()
     url = models.URLField(blank=True)
@@ -17,6 +19,7 @@ class Comment(models.Model):
     class Meta:
         verbose_name = '评论'
         verbose_name_plural = '评论列表'
+        ordering = ['-created_at'] # ordering the comments with desc
 
     def __str__(self):
         return '{}: {}'.format(self.username, self.text[:10])

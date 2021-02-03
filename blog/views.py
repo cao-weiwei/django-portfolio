@@ -4,25 +4,11 @@ from django.utils.text import slugify
 import markdown2
 
 
-# def base(request):
-#     """
-#     For rendering the base.html, includes the header, footer and right-side nav.
-#     - Header includes Website title, Nav links
-#     - Footer includes Copyright and other information
-#     - Right-side nav includes
-#     """
-#     context = {
-#         'website_title': 'White & Black',
-#     }
-#
-#     return render(request, 'blog/base.html', context)
-
-
 def index(request):
     """
     This function fetch all blog posts and render the index.html which is the main region of base.html
     """
-    blog_posts = BlogPost.objects.all().order_by('-created_at')
+    blog_posts = BlogPost.objects.all()
 
     context = {
         'website_title': 'White & Black',
@@ -32,9 +18,14 @@ def index(request):
     return render(request, 'blog/index.html', context)
 
 
-def blog_post_detail(request, post_id):
-    blog_post = get_object_or_404(BlogPost, pk=post_id)
+def blog_post_detail(request, blog_post_id):
+    """
+    get the content of a specific blog post
+    """
+    # to fetch the blog post
+    blog_post = get_object_or_404(BlogPost, pk=blog_post_id)
 
+    # convert markdown into html tags with code friendly css style
     md2html = markdown2.markdown(
         blog_post.text,
         extras=[
@@ -44,8 +35,8 @@ def blog_post_detail(request, post_id):
             'toc'
         ],
     )
-    blog_post.text = md2html
-    blog_post.toc = md2html.toc_html
+    blog_post.text = md2html # html tags
+    blog_post.toc = md2html.toc_html # table of content
 
     context = {
         'website_title': 'White & Black',
@@ -56,8 +47,11 @@ def blog_post_detail(request, post_id):
 
 
 def archive(request, year, month):
-
-    blog_posts = BlogPost.objects.filter(created_at__year=year, created_at__month=month).order_by('-created_at')
+    """
+    according to the year and month to show blog posts
+    """
+    # to fetch blog posts with specific year and month
+    blog_posts = BlogPost.objects.filter(created_at__year=year, created_at__month=month)
 
     context = {
         'website_title': 'White & Black',
@@ -68,9 +62,12 @@ def archive(request, year, month):
 
 
 def category(request, cate_id):
-
+    """
+    to show all blog posts with specific category id
+    """
+    # to fetch the category id and to filter the blog posts with this id
     cate = get_object_or_404(Category, pk=cate_id)
-    blog_posts = BlogPost.objects.filter(category=cate).order_by('-created_at')
+    blog_posts = BlogPost.objects.filter(category=cate)
 
     context = {
         'website_title': 'White & Black',
@@ -81,9 +78,12 @@ def category(request, cate_id):
 
 
 def tags(request, tag_id):
-
+    """
+    to show all blog posts with specific tag id
+    """
+    # to search the tag with the specific tag id and return all the blog posts with this tag
     tag = get_object_or_404(Tag, pk=tag_id)
-    blog_posts = BlogPost.objects.filter(tags=tag).order_by('-created_at')
+    blog_posts = BlogPost.objects.filter(tags=tag)
 
     context = {
         'website_title': 'White & Black',
